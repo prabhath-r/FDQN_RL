@@ -1,4 +1,4 @@
-# Advanced DQN Framework for Web-Based Game Automation
+# DQN Framework for Web-Based Game Automation
 
 ## Overview
 This project develops a customizable Deep Q-Network (DQN) framework for automating web-based games using reinforcement learning. The primary focus is on the Chrome Dino game as a baseline model. The framework is built with PyTorch and uses Selenium for real-time game data extraction.
