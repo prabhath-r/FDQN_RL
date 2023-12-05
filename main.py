@@ -4,8 +4,10 @@ import os
 import re
 from dqn_agent import DQNAgent
 import config
-from environment import ChromeDinoWrapper, BreakoutWrapper
+from environment import ChromeDinoWrapper, BreakoutWrapper, PongWrapper
 from torch.utils.tensorboard import SummaryWriter
+
+enable_rendering = False
 
 def find_latest_checkpoint(env_name):
     folder_name = f"{env_name.lower()}_model"
@@ -33,6 +35,9 @@ def train():
     elif config.GAME_ENV == 'ChromeDino':
         config.ACTION_SIZE = 2
         env = ChromeDinoWrapper()
+    elif config.GAME_ENV == 'Pong':
+        config.ACTION_SIZE = 6
+        env = PongWrapper()
     else:
         raise ValueError("Select from the list [Breakout, ChromeDino]")
 
@@ -58,10 +63,11 @@ def train():
                 writer.add_scalar('Loss/train', loss, episode)
             writer.add_scalar('Reward/train', total_reward, episode)
 
-            if config.GAME_ENV == 'ChromeDino':
-                pass  # No rendering for Chrome Dino
-            else:
-                env.render()
+            if enable_rendering:
+                if config.GAME_ENV == 'ChromeDino':
+                    pass  # no rendering for Chrome Dino, we will see that using chromedriver for that
+                else:
+                    env.render()
 
             if done:
                 break
@@ -75,7 +81,7 @@ def train():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--game_env", type=str, required=True, choices=["Breakout", "ChromeDino"],
+    parser.add_argument("--game_env", type=str, required=True, choices=["Breakout", "ChromeDino", "Pong"],
                         help="Specify the game environment: 'Breakout' or 'ChromeDino'")
     args = parser.parse_args()
 

@@ -25,7 +25,7 @@ class ChromeDinoWrapper(GameEnvironment):
     def __init__(self):
         chrome_options = Options()
         self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver.get("https://prabhath-r.github.io/DQN_Framework_RL-Game/chrome_dino.html")
+        self.driver.get("https://656e9e143ecd2107ab2d8f7a--imaginative-beignet-868409.netlify.app/")
         self.dino = self.driver.find_element(By.TAG_NAME, "body")
 
     def get_state(self):
@@ -51,7 +51,7 @@ class ChromeDinoWrapper(GameEnvironment):
     def step(self, action):
         if action == 1:
             self.dino.send_keys(Keys.SPACE)  # jump
-        time.sleep(0.1)  # time between actions
+        time.sleep(0.01)  # time between actions
         next_state = self.get_state()
         reward = 0.1
         done = self.check_game_over()
@@ -97,3 +97,34 @@ class BreakoutWrapper(GameEnvironment):
     def close(self):
         self.env.close()
 
+class PongWrapper(GameEnvironment):
+    def __init__(self):
+        self.env = gym.make('Pong-v4', render_mode='human')
+        self.state = self.env.reset()
+
+    def reset(self):
+        observation = self.env.reset()
+        return self.process_observation(observation)
+
+    def step(self, action):
+        # Unpack returned values correctly, using a wildcard for any additional data
+        results = self.env.step(action)
+        next_observation, reward, done, *_ = results
+        return self.process_observation(next_observation), reward, done
+
+    def process_observation(self, observation):
+        # Check if observation is a tuple and extract the image
+        if isinstance(observation, tuple):
+            observation = observation[0]  # Assuming the image is the first element
+
+        # Convert to grayscale and resize
+        image = Image.fromarray(observation)
+        image = image.convert('L')
+        image = image.resize((80, 80), Image.Resampling.LANCZOS)
+        return np.array(image)
+
+    def render(self):
+        self.env.render()
+
+    def close(self):
+        self.env.close()
