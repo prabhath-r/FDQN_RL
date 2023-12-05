@@ -4,7 +4,7 @@ import os
 import re
 from dqn_agent import DQNAgent
 import config
-from environment import ChromeDinoWrapper, BreakoutWrapper, PongWrapper
+from environment import ChromeDinoEnvironment, BreakoutEnvironment, PongEnvironment
 from torch.utils.tensorboard import SummaryWriter
 
 enable_rendering = False
@@ -31,13 +31,13 @@ def train():
 
     if config.GAME_ENV == 'Breakout':
         config.ACTION_SIZE = 4
-        env = BreakoutWrapper()
+        env = BreakoutEnvironment()
     elif config.GAME_ENV == 'ChromeDino':
         config.ACTION_SIZE = 2
-        env = ChromeDinoWrapper()
+        env = ChromeDinoEnvironment()
     elif config.GAME_ENV == 'Pong':
         config.ACTION_SIZE = 6
-        env = PongWrapper()
+        env = PongEnvironment()
     else:
         raise ValueError("Select from the list [Breakout, ChromeDino]")
 

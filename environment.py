@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image
 import io
 
-class GameEnvironment:
+class GymWrapper:
     def reset(self):
         raise NotImplementedError
 
@@ -21,7 +21,7 @@ class GameEnvironment:
     def close(self):
         raise NotImplementedError
 
-class ChromeDinoWrapper(GameEnvironment):
+class ChromeDinoEnvironment(GymWrapper):
     def __init__(self):
         chrome_options = Options()
         self.driver = webdriver.Chrome(options=chrome_options)
@@ -65,7 +65,7 @@ class ChromeDinoWrapper(GameEnvironment):
     def close(self):
         self.driver.close()
 
-class BreakoutWrapper(GameEnvironment):
+class BreakoutEnvironment(GymWrapper):
     def __init__(self):
         self.env = gym.make('ALE/Breakout-v5', render_mode = 'human')
         self.env.reset()
@@ -97,7 +97,7 @@ class BreakoutWrapper(GameEnvironment):
     def close(self):
         self.env.close()
 
-class PongWrapper(GameEnvironment):
+class PongEnvironment(GymWrapper):
     def __init__(self):
         self.env = gym.make('Pong-v4', render_mode='human')
         self.state = self.env.reset()
@@ -107,17 +107,13 @@ class PongWrapper(GameEnvironment):
         return self.process_observation(observation)
 
     def step(self, action):
-        # Unpack returned values correctly, using a wildcard for any additional data
         results = self.env.step(action)
         next_observation, reward, done, *_ = results
         return self.process_observation(next_observation), reward, done
 
     def process_observation(self, observation):
-        # Check if observation is a tuple and extract the image
         if isinstance(observation, tuple):
-            observation = observation[0]  # Assuming the image is the first element
-
-        # Convert to grayscale and resize
+            observation = observation[0]
         image = Image.fromarray(observation)
         image = image.convert('L')
         image = image.resize((80, 80), Image.Resampling.LANCZOS)
