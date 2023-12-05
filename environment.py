@@ -1,3 +1,4 @@
+import gym
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
@@ -7,11 +8,24 @@ import numpy as np
 from PIL import Image
 import io
 
-class ChromeDinoEnvironment:
+class GameEnvironment:
+    def reset(self):
+        raise NotImplementedError
+
+    def step(self):
+        raise NotImplementedError
+
+    def render(self):
+        raise NotImplementedError
+
+    def close(self):
+        raise NotImplementedError
+
+class ChromeDinoWrapper(GameEnvironment):
     def __init__(self):
         chrome_options = Options()
         self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver.get("file:////Users/prabhathr/Desktop/Projects/DQN_Framwork_RL-Game/chrome_dino.html")
+        self.driver.get("https://prabhath-r.github.io/DQN_Framework_RL-Game/chrome_dino.html")
         self.dino = self.driver.find_element(By.TAG_NAME, "body")
 
     def get_state(self):
@@ -43,9 +57,43 @@ class ChromeDinoEnvironment:
         done = self.check_game_over()
         if done:
             print("Game Over")
-
         return next_state, reward, done
-
+    
+    def render(self):
+        pass
 
     def close(self):
         self.driver.close()
+
+class BreakoutWrapper(GameEnvironment):
+    def __init__(self):
+        self.env = gym.make('ALE/Breakout-v5', render_mode = 'human')
+        self.env.reset()
+
+    def reset(self):
+        observation = self.env.reset()  
+        return self.process_observation(observation)
+
+    def step(self, action):
+        next_observation, reward, done, _, _ = self.env.step(action)
+        next_state = self.process_observation(next_observation)
+        return next_state, reward, done
+
+    def process_observation(self, observation):
+        if isinstance(observation, tuple):
+            observation = observation[0]
+        if isinstance(observation, np.ndarray):
+            image = Image.fromarray(observation)
+        else:
+            raise TypeError("Unsupported observation format")
+
+        image = image.convert('L')
+        image = image.resize((80, 80), Image.Resampling.LANCZOS)
+        return np.array(image)
+    
+    def render(self):
+        self.env.render()
+
+    def close(self):
+        self.env.close()
+

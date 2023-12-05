@@ -1,3 +1,4 @@
+import os
 import random
 import numpy as np
 import torch
@@ -36,16 +37,20 @@ class DQNAgent:
 
     def replay(self):
         if len(self.memory) < self.batch_size:
-            return
+            return None  # Not enough data to form a training batch
+
         minibatch = random.sample(self.memory, self.batch_size)
+        losses = []  # To store loss for each sample in the minibatch
         self.optimizer.zero_grad()
 
         for state, action, reward, next_state, done in minibatch:
             state_tensor = torch.tensor(state, dtype=torch.float).unsqueeze(0).unsqueeze(0).to(self.device)
             next_state_tensor = torch.tensor(next_state, dtype=torch.float).unsqueeze(0).unsqueeze(0).to(self.device)
+
             target = reward
             if not done:
                 target = reward + self.gamma * np.amax(self.model(next_state_tensor).cpu().data.numpy())
+            
             target_f = self.model(state_tensor).cpu().data.numpy()
             target_f[0][action] = target
             target_f_tensor = torch.tensor(target_f, dtype=torch.float).to(self.device)
@@ -53,11 +58,22 @@ class DQNAgent:
             output = self.model(state_tensor)
             loss = self.criterion(output, target_f_tensor)
             loss.backward()
+            losses.append(loss.item())
+
         self.optimizer.step()
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
-    def save_checkpoint(self, filename="checkpoint.pth"):
+        average_loss = sum(losses) / len(losses) if losses else None
+        return average_loss
+
+    def save_checkpoint(self, episode_number):
+        env_name = config.GAME_ENV  
+        folder_name = f"{env_name.lower()}_model"  
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)  
+
+        filename = f"{folder_name}/{env_name}_checkpoint_{episode_number}.pth"  
         checkpoint = {
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optimizer.state_dict(),
@@ -66,7 +82,13 @@ class DQNAgent:
         }
         torch.save(checkpoint, filename)
 
-    def load_checkpoint(self, filename="checkpoint.pth"):
+    def load_checkpoint(self, episode_number):
+        env_name = config.GAME_ENV  
+        folder_name = f"{env_name.lower()}_model"  
+        filename = f"{folder_name}/{env_name}_checkpoint_{episode_number}.pth"  
+
+        if not os.path.exists(filename):
+            raise FileNotFoundError(f"No checkpoint file found at {filename}")
         checkpoint = torch.load(filename)
         self.model.load_state_dict(checkpoint['model_state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
