@@ -7,6 +7,7 @@ import time
 import numpy as np
 from PIL import Image
 import io
+import matplotlib.pyplot as plt
 
 class GymWrapper:
     def reset(self):
@@ -25,7 +26,7 @@ class ChromeDinoEnvironment(GymWrapper):
     def __init__(self):
         chrome_options = Options()
         self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver.get("https://656e9e143ecd2107ab2d8f7a--imaginative-beignet-868409.netlify.app/")
+        self.driver.get("https://6574dd7dc999e52870826b07--extraordinary-custard-4155ae.netlify.app/")
         self.dino = self.driver.find_element(By.TAG_NAME, "body")
 
     def get_state(self):
@@ -65,6 +66,14 @@ class ChromeDinoEnvironment(GymWrapper):
     def close(self):
         self.driver.close()
 
+    def visualize_state(self, state):
+        if state.ndim == 4:
+            # If state has a batch dimension, we remove it
+            state = state.squeeze(0)
+        plt.imshow(state, cmap='gray')  # No need to squeeze if already 2D or 3D
+        plt.title("Current State - ChromeDino")
+        plt.show()
+
 class BreakoutEnvironment(GymWrapper):
     def __init__(self):
         self.env = gym.make('ALE/Breakout-v5', render_mode = 'human')
@@ -97,6 +106,15 @@ class BreakoutEnvironment(GymWrapper):
     def close(self):
         self.env.close()
 
+    def visualize_state(self, state):
+        if state.ndim == 4:
+            # If state has a batch dimension, we remove it
+            state = state.squeeze(0)
+        plt.imshow(state, cmap='gray')  # No need to squeeze if already 2D or 3D
+        plt.title("Current State - Breakout")
+        plt.show()
+
+
 class PongEnvironment(GymWrapper):
     def __init__(self):
         self.env = gym.make('Pong-v4', render_mode='human')
@@ -124,3 +142,11 @@ class PongEnvironment(GymWrapper):
 
     def close(self):
         self.env.close()
+
+    def visualize_state(self, state):
+        if state.ndim == 4:
+            # If state has a batch dimension, we remove it
+            state = state.squeeze(0)
+        plt.imshow(state, cmap='gray')  # No need to squeeze if already 2D or 3D
+        plt.title("Current State - Pong")
+        plt.show()

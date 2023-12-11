@@ -37,7 +37,7 @@ class DQNAgent:
 
     def replay(self):
         if len(self.memory) < self.batch_size:
-            return None  # Not enough data to form a training batch
+            return None  # not enough data to form a training batch
 
         minibatch = random.sample(self.memory, self.batch_size)
         losses = []  # To store loss for each sample in the minibatch
@@ -87,13 +87,14 @@ class DQNAgent:
         folder_name = f"{env_name.lower()}_model"  
         filename = f"{folder_name}/{env_name}_checkpoint_{episode_number}.pth"  
 
-        if not os.path.exists(filename):
-            raise FileNotFoundError(f"No checkpoint file found at {filename}")
-        checkpoint = torch.load(filename)
-        self.model.load_state_dict(checkpoint['model_state_dict'])
-        self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-        self.memory = deque(checkpoint['replay_memory'], maxlen=config.MEMORY_SIZE)
-        self.epsilon = checkpoint['epsilon']
+        if os.path.exists(filename):
+            checkpoint = torch.load(filename)
+            self.model.load_state_dict(checkpoint['model_state_dict'])
+            self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+            self.memory = deque(checkpoint['replay_memory'], maxlen=config.MEMORY_SIZE)
+            self.epsilon = checkpoint['epsilon']
+        else:
+            print(f"No checkpoint file found at {filename}. Training will start from scratch.")
 
     def learn(self):
         self.replay()
