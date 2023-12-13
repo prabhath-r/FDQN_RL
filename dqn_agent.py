@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
+from torch.optim.lr_scheduler import StepLR
 import config
 from model import DQN
 from collections import deque
@@ -21,6 +22,7 @@ class DQNAgent:
         self.epsilon_decay = config.EPSILON_DECAY
         self.learning_rate = config.LEARNING_RATE
         self.optimizer = optim.Adam(self.model.parameters(), lr=self.learning_rate)
+        self.scheduler = StepLR(self.optimizer, step_size=config.LR_SCHEDULER_STEP_SIZE, gamma=config.LR_SCHEDULER)
         self.batch_size = config.BATCH_SIZE
         self.criterion = nn.MSELoss()
 
@@ -98,3 +100,4 @@ class DQNAgent:
 
     def learn(self):
         self.replay()
+        self.scheduler.step()
