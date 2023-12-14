@@ -2,7 +2,7 @@ import os
 import re
 
 def find_latest_checkpoint(env_name):
-    folder_name = f"{env_name.lower()}_model"
+    folder_name = f"models/{env_name.lower()}_model"
     if not os.path.exists(folder_name):
         return None  
 
@@ -18,7 +18,7 @@ def find_latest_checkpoint(env_name):
     return latest_episode
 
 def delete_old_checkpoints(env_name, keep_last_n=1):
-    folder_name = f"{env_name.lower()}_model"
+    folder_name = f"models/{env_name.lower()}_model"
     if not os.path.exists(folder_name):
         return
 

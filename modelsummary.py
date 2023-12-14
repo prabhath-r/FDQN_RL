@@ -2,7 +2,7 @@ from torchsummary import summary
 import torch
 from model import DQN  
 
-ACTION_SIZE = 4 ## (ChromeDino=2), (Breakout=4), (Pong=6)
+ACTION_SIZE = 2 # change based on the env action size to see how the model parameters change
 
 model = DQN(ACTION_SIZE) 
 input_tensor = torch.zeros(1, 1, 80, 80)  
