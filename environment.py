@@ -101,8 +101,8 @@ class BaseEnvironment(GymWrapper):
 
 class BreakoutEnvironment(BaseEnvironment):
     def __init__(self):
-        # super().__init__('ALE/Breakout-v5', render_mode='human')
-        super().__init__('ALE/Breakout-v5')
+        super().__init__('ALE/Breakout-v5', render_mode='human')
+        # super().__init__('ALE/Breakout-v5')
 
 class PongEnvironment(BaseEnvironment):
     def __init__(self):
@@ -116,8 +116,8 @@ class SpaceInvadersEnvironment(BaseEnvironment):
 
 class MsPacmanEnvironment(BaseEnvironment):
     def __init__(self):
-        # super().__init__('ALE/MsPacman-v5', render_mode='human')
-        super().__init__('ALE/MsPacman-v5')
+        super().__init__('ALE/MsPacman-v5', render_mode='human')
+        # super().__init__('ALE/MsPacman-v5')
 
 class FrostbiteEnvironment(BaseEnvironment):
     def __init__(self):

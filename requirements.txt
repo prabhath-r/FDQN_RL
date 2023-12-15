@@ -1,0 +1,9 @@
+matplotlib
+numpy
+gym
+gym[atari]
+selenium
+torch
+Pillow==9.2.0
+torchsummary==1.5.1
+tensorboard

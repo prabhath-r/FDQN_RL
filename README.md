@@ -1,24 +1,34 @@
 # DQN Framework for Web-Based Game Automation
 
 ## Overview
-This project develops a customizable Deep Q-Network (DQN) framework for automating web-based games using reinforcement learning. The primary focus is on the Chrome Dino game as a baseline model. The framework is built with PyTorch and uses Selenium for real-time game data extraction.
+This project develops a customizable Deep Q-Network (DQN) framework for automating web-based games using reinforcement learning. The framework is built with PyTorch and uses Selenium for real-time game data extraction for web games. The primary application is the Chrome Dino game, serving as a baseline model. The framework is tested with multiple open ai gym environemtns to ensure compatibility and extendability. 
+
+## Installation
+1. Clone the repository: `git clone https://github.com/prabhath-r/DQN_Framework_RL-Game`
+2. Install dependencies: `pip install -r requirements.txt`
+3. Run the main script: `python main.py --game_env [game_name]`
 
 ## Code Structure
 - `dqn_agent.py`: Implements the DQN agent, capable of decision-making and learning.
 - `environment.py`: Manages the interaction between the DQN agent and the game.
 - `model.py`: Defines the neural network architecture for the DQN agent.
-- `main.py`: The main executable script for training the agent.
 - `config.py`: Contains hyperparameter settings for the DQN agent.
+- `train_utils.py`: Contains helper functions to dynamically save and load the previous checkpoints
+- `main.py`: The main executable script for training the agent.
 
-## Current Progress
-- The DQN agent is functional, interacting with the game environment, but requires further optimization and testing.
-- The game environment integration allows real-time data collection, though improvements are needed for better synchronization between the agent's actions and the game's responses.
-- Initial hyperparameters are set up for easy customization.
+## Usage
+- **Training the Agent**: Execute `main.py` with the desired game environment.
+- **Modifying Hyperparameters**: Adjust settings in `config.py` for custom training scenarios.
+- **Environment Adaptation**: Use `environment.py` to interface with new or existing game environments.
 
-## Challenges and Future Work
-- Synchronization issues between the agent's actions and game response.
-- Optimization of the DQN model for faster learning and decision-making.
-- Refinement of neural network dimensions and architecture for adaptability to different game environments.
+## Key Features
+- **Customizable DQN Agent**: Implements state-of-the-art decision-making and learning capabilities.
+- **Dynamic Environment Management**: Seamlessly integrates with various web-based game environments.
+- **Flexible Neural Network Architecture**: Tailors to specific game dynamics, enhancing learning efficiency.
+- **Comprehensive Training Suite**: Includes tools and scripts for effective training and performance evaluation.
+
+## Documentation
+- [Project Report](lhttps://drive.google.com/file/d/1w6oYCdXDG5010LkHaduZOur9Gla2Q5Tl/view?usp=sharing)
 
 ## References
 - [Chrome Dino Game Simulation on CodePen](https://codepen.io/MysticReborn/pen/rygqao)
