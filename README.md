@@ -28,7 +28,7 @@ This project develops a customizable Deep Q-Network (DQN) framework for automati
 - **Comprehensive Training Suite**: Includes tools and scripts for effective training and performance evaluation.
 
 ## Documentation
-- [Project Report](lhttps://drive.google.com/file/d/1w6oYCdXDG5010LkHaduZOur9Gla2Q5Tl/view?usp=sharing)
+- [Project Report](https://drive.google.com/file/d/1w6oYCdXDG5010LkHaduZOur9Gla2Q5Tl/view?usp=sharing)
 
 ## References
 - [Chrome Dino Game Simulation on CodePen](https://codepen.io/MysticReborn/pen/rygqao)
