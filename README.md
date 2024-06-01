@@ -1,3 +1,5 @@
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fdqn-a-flexible-deep-q-network-framework-for/multi-goal-reinforcement-learning-on-no-extra)](https://paperswithcode.com/sota/multi-goal-reinforcement-learning-on-no-extra?p=fdqn-a-flexible-deep-q-network-framework-for)
+
 # DQN Framework for Web-Based Game Automation
 
 ## Overview
