@@ -30,6 +30,7 @@ This project develops a customizable Deep Q-Network (DQN) framework for automati
 - **Comprehensive Training Suite**: Includes tools and scripts for effective training and performance evaluation.
 
 ## Documentation
+- [Research Paper OpenAIRE](https://zenodo.org/records/11388112)
 - [Project Report](https://drive.google.com/file/d/1w6oYCdXDG5010LkHaduZOur9Gla2Q5Tl/view?usp=sharing)
 
 ## References
